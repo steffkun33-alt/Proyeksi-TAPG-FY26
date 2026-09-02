@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyeksi Kinerja TAPG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input[type=range] {
+            accent-color: #d97706;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans p-6">
+
+    <div class="max-w-5xl mx-auto bg-white rounded-xl shadow border border-gray-200 p-6">
+        <h2 class="text-2xl font-bold mb-6">Proyeksi Kinerja TAPG</h2>
+
+        <!-- GRID SLIDERS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>ASP CPO (Rp/kg)</span><span id="val_asp_cpo" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="asp_cpo" min="12200" max="17000" step="100" value="14200" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">ASP 2025 Rp 14.220</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>Vol CPO (Ton)</span><span id="val_vol_cpo" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="vol_cpo" min="330000" max="500000" step="1000" value="400000" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">H2 2025 467K</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>ASP PK (Rp/kg)</span><span id="val_asp_pk" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="asp_pk" min="5300" max="15000" step="100" value="12000" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">ASP 2025 Rp 11.967</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>Vol PK (Ton)</span><span id="val_vol_pk" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="vol_pk" min="60000" max="110000" step="1000" value="85000" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">H2 2025 98K</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>ASP PKO (Rp/kg)</span><span id="val_asp_pko" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="asp_pko" min="10000" max="32000" step="100" value="26200" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">ASP 2025 Rp 26.212</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>Vol PKO (Ton)</span><span id="val_vol_pko" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="vol_pko" min="8000" max="21000" step="500" value="12000" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">H2 2025 10,2K</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>Inflasi Biaya (%)</span><span id="val_inflasi" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="inflasi" min="-10" max="30" step="1" value="0" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">Geser buat stress-test inflasi lebih lanjut</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>Margin Laba Usaha (%)</span><span id="val_margin" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="margin" min="17" max="45" step="1" value="34" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">Avg 2025 34%</span>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">
+                    <span>Laba Asosiasi (Juta Rp)</span><span id="val_asosiasi" class="text-amber-700"></span>
+                </div>
+                <input type="range" id="asosiasi" min="400000" max="1200000" step="10000" value="535000" class="w-full">
+                <span class="text-[10px] text-gray-400 mt-1">H2 535K</span>
+            </div>
+
+        </div>
+
+        <!-- TABEL HASIL -->
+        <div class="overflow-x-auto border rounded-lg mb-8">
+            <table class="w-full text-left text-sm border-collapse bg-white">
+                <thead>
+                    <tr class="border-b-2 border-gray-200 bg-gray-50 text-gray-500 uppercase tracking-wider text-xs">
+                        <th class="p-4 w-[45%] font-bold">Metrik</th>
+                        <th class="p-4 text-right font-bold">Proyeksi Q3+Q4</th>
+                        <th class="p-4 text-right font-bold text-amber-700">FY2026 <span class="block text-[10px] font-normal text-gray-400 mt-1">1H26 AKTUAL + PROYEKSI</span></th>
+                    </tr>
+                </thead>
+                <tbody id="results_table" class="divide-y divide-gray-100">
+                    <!-- Data injeksi JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- UJI KEWAJARAN -->
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+            <h3 class="text-xs font-bold text-gray-500 mb-4 tracking-wide uppercase">UJI KEWAJARAN — ANGKA MODEL INI MASUK AKAL GAK?</h3>
+            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <table class="w-full text-sm text-left">
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="p-3 font-medium">FY2025 Aktual <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full text-gray-600 ml-2 font-normal">atribusi induk</span></td>
+                            <td class="p-3 text-right">Rp3,68 T</td>
+                            <td class="p-3 text-right text-gray-400">—</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="p-3 font-medium">Rentang analis sekuritas <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full text-gray-600 ml-2 font-normal">IPot, KB, Ciptadana</span></td>
+                            <td class="p-3 text-right">Rp3,90 – 4,85 T</td>
+                            <td class="p-3 text-right text-emerald-600 font-bold">+6–32%</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="p-3 font-medium">1H26 aktual disetahunkan (×2) <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full text-gray-600 ml-2 font-normal">nol asumsi</span></td>
+                            <td class="p-3 text-right">Rp4,08 T</td>
+                            <td class="p-3 text-right text-emerald-600 font-bold">+11%</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 font-bold">Model ini <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded-full text-gray-700 ml-2 font-normal">FY2026E</span></td>
+                            <td class="p-3 text-right font-bold" id="uji_model_val">Rp0 T</td>
+                            <td class="p-3 text-right font-bold text-emerald-600" id="uji_model_pct">+0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Konstanta H1 2026 Aktual & Target
+        const H1_REV = 5857150000000;
+        const H1_LABA_USAHA = 1933747000000;
+        const H1_ASOSIASI = 552562000000;
+        const H1_LABA_BERJALAN = 2539041000000;
+        const H1_LABA_INDUK = 2040370000000;
+        const SHARES = 19852540000;
+        
+        // Konstanta Uji Kewajaran
+        const FY25_AKTUAL = 3676843000000;
+        const ASUMSI_HARGA_SAHAM = 2030;
+
+        // Formatter Miliar / Triliun
+        const formatSingkat = (num) => {
+            if (num === 0) return "Rp0";
+            const isNegative = num < 0;
+            const absNum = Math.abs(num);
+            let result = "";
+            
+            if (absNum >= 1e12) {
+                result = "Rp" + (absNum / 1e12).toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " T";
+            } else if (absNum >= 1e9) {
+                result = "Rp" + (absNum / 1e9).toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " M";
+            } else {
+                result = "Rp" + absNum.toLocaleString('id-ID');
+            }
+            return isNegative ? "-" + result : result;
+        };
+
+        const formatNum = (angka) => new Intl.NumberFormat('id-ID').format(angka);
+        const hitungPersentase = (baru, lama) => {
+            const pct = ((baru / lama) - 1) * 100;
+            return (pct > 0 ? "+" : "") + pct.toLocaleString('id-ID', {maximumFractionDigits: 0}) + "%";
+        };
+
+        const inputs = ['asp_cpo', 'vol_cpo', 'asp_pk', 'vol_pk', 'asp_pko', 'vol_pko', 'inflasi', 'margin', 'asosiasi'];
+
+        function calculate() {
+            const vals = {};
+            inputs.forEach(id => {
+                vals[id] = parseFloat(document.getElementById(id).value);
+                
+                let displayVal = formatNum(vals[id]);
+                if(id.includes('asp')) displayVal = "Rp" + displayVal;
+                if(id === 'inflasi' || id === 'margin') displayVal = displayVal + "%";
+                
+                document.getElementById(`val_${id}`).innerText = displayVal;
+            });
+
+            // Kalkulasi Proyeksi Q3 + Q4
+            const revCpo = vals.asp_cpo * (vals.vol_cpo * 1000);
+            const revPk = vals.asp_pk * (vals.vol_pk * 1000);
+            const revPko = vals.asp_pko * (vals.vol_pko * 1000);
+            
+            const grossRev = revCpo + revPk + revPko;
+            const netTotalRev = grossRev * (1 - (vals.inflasi / 100));
+            
+            const totalLabaUsaha = netTotalRev * (vals.margin / 100);
+            const labaAsosiasi = vals.asosiasi * 1000000; 
+            const labaTahunBerjalan = totalLabaUsaha + labaAsosiasi;
+            const labaBersihInduk = labaTahunBerjalan * 0.95;
+
+            // Kalkulasi FY 2026 (H1 + Proyeksi Q3 Q4)
+            const fyRev = H1_REV + netTotalRev;
+            const fyLabaUsaha = H1_LABA_USAHA + totalLabaUsaha;
+            const fyAsosiasi = H1_ASOSIASI + labaAsosiasi;
+            const fyLabaBerjalan = H1_LABA_BERJALAN + labaTahunBerjalan;
+            const fyLabaInduk = H1_LABA_INDUK + labaBersihInduk;
+            
+            // Kalkulasi Valuasi
+            const epsFY = fyLabaInduk / SHARES;
+            const peRatio = ASUMSI_HARGA_SAHAM / epsFY;
+
+            // Update Tabel Hasil
+            const tableHTML = `
+                <tr>
+                    <td class="p-4 font-medium">Total Revenue CPO</td>
+                    <td class="p-4 text-right">${formatSingkat(revCpo)}</td>
+                    <td class="p-4 text-right text-gray-400">—</td>
+                </tr>
+                <tr>
+                    <td class="p-4 font-medium">Total Revenue PK</td>
+                    <td class="p-4 text-right">${formatSingkat(revPk)}</td>
+                    <td class="p-4 text-right text-gray-400">—</td>
+                </tr>
+                <tr>
+                    <td class="p-4 font-medium">Total Revenue PKO</td>
+                    <td class="p-4 text-right">${formatSingkat(revPko)}</td>
+                    <td class="p-4 text-right text-gray-400">—</td>
+                </tr>
+                <tr class="bg-gray-50/80">
+                    <td class="p-4 font-bold text-gray-900">Total Revenue Seluruhnya <span class="text-[11px] font-normal text-gray-500 block mt-0.5">*(Setelah efek inflasi ${vals.inflasi}%)</span></td>
+                    <td class="p-4 text-right font-bold text-gray-900">${formatSingkat(netTotalRev)}</td>
+                    <td class="p-4 text-right font-bold text-amber-700">${formatSingkat(fyRev)}</td>
+                </tr>
+                <tr>
+                    <td class="p-4 font-bold">Laba Usaha <span class="inline-block bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded-full ml-2 font-normal">${vals.margin}% dari Revenue seluruhnya</span></td>
+                    <td class="p-4 text-right font-medium">${formatSingkat(totalLabaUsaha)}</td>
+                    <td class="p-4 text-right font-medium">${formatSingkat(fyLabaUsaha)}</td>
+                </tr>
+                <tr>
+                    <td class="p-4 font-medium">Laba Entitas Asosiasi <span class="inline-block bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded-full ml-2 font-normal">Dari slider</span></td>
+                    <td class="p-4 text-right">${formatSingkat(labaAsosiasi)}</td>
+                    <td class="p-4 text-right">${formatSingkat(fyAsosiasi)}</td>
+                </tr>
+                <tr class="bg-gray-50/80">
+                    <td class="p-4 font-bold">Laba Tahun Berjalan</td>
+                    <td class="p-4 text-right font-bold">${formatSingkat(labaTahunBerjalan)}</td>
+                    <td class="p-4 text-right font-bold">${formatSingkat(fyLabaBerjalan)}</td>
+                </tr>
+                <tr>
+                    <td class="p-4 font-bold text-gray-900">Laba Entitas Induk <span class="inline-block bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full ml-2 font-normal">95% dari Laba Berjalan</span></td>
+                    <td class="p-4 text-right font-bold text-gray-900">${formatSingkat(labaBersihInduk)}</td>
+                    <td class="p-4 text-right font-bold text-amber-700">${formatSingkat(fyLabaInduk)}</td>
+                </tr>
+                <tr class="bg-amber-50">
+                    <td class="p-4 font-bold text-amber-900">EPS / PE Asumsi Rp${formatNum(ASUMSI_HARGA_SAHAM)}</td>
+                    <td class="p-4 text-right text-gray-400 font-medium">—</td>
+                    <td class="p-4 text-right font-bold text-amber-900">EPS Rp${Math.round(epsFY).toLocaleString('id-ID')} · P/E ${peRatio.toLocaleString('id-ID', {maximumFractionDigits:2})}×</td>
+                </tr>
+            `;
+            document.getElementById('results_table').innerHTML = tableHTML;
+
+            // Update Uji Kewajaran Box
+            document.getElementById('uji_model_val').innerText = formatSingkat(fyLabaInduk);
+            
+            const pctModel = hitungPersentase(fyLabaInduk, FY25_AKTUAL);
+            const ujiPctElement = document.getElementById('uji_model_pct');
+            ujiPctElement.innerText = pctModel;
+            
+            // Ubah warna text merah/hijau tergantung minus/plus
+            if (fyLabaInduk < FY25_AKTUAL) {
+                ujiPctElement.classList.replace('text-emerald-600', 'text-red-600');
+            } else {
+                ujiPctElement.classList.replace('text-red-600', 'text-emerald-600');
+            }
+        }
+
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', calculate);
+        });
+
+        calculate();
+    </script>
+</body>
+</html>
